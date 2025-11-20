@@ -1,0 +1,27 @@
+{
+  "name": "stmp-email-sender",
+  "version": "1.0.0",
+  "description": "SMTP email sender for sending client updates",
+  "main": "smtp-email-sender.js",
+  "scripts": {
+    "start": "node smtp-email-sender.js",
+    "send-update": "node smtp-email-sender.js",
+    "send-to-client": "node send-to-one-client.js",
+    "server": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "smtp",
+    "email",
+    "nodemailer",
+    "client-updates"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "nodemailer": "^6.9.7"
+  }
+}
