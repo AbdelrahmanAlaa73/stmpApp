@@ -4,7 +4,7 @@
   "description": "SMTP email sender for sending client updates",
   "main": "smtp-email-sender.js",
   "scripts": {
-    "start": "node smtp-email-sender.js",
+    "start": "node server.js",
     "send-update": "node smtp-email-sender.js",
     "send-to-client": "node send-to-one-client.js",
     "server": "node server.js",
