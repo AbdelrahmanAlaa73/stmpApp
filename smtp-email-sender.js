@@ -75,59 +75,81 @@ async function sendUpdateToClients(clientEmails, subject, updateMessage, options
 function generateUpdateEmailHTML(message, options = {}) {
   return `
     <!DOCTYPE html>
-    <html>
+    <html dir="rtl" lang="ar">
     <head>
       <meta charset="utf-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <style>
+        * {
+          direction: rtl;
+          text-align: right;
+        }
         body {
-          font-family: Arial, sans-serif;
-          line-height: 1.6;
+          font-family: 'Segoe UI', Tahoma, Arial, 'Arabic Typesetting', 'Traditional Arabic', sans-serif;
+          line-height: 1.8;
           color: #333;
           max-width: 600px;
           margin: 0 auto;
           padding: 20px;
+          background-color: #f5f5f5;
         }
         .header {
           background-color: #4CAF50;
           color: white;
-          padding: 20px;
+          padding: 25px;
           text-align: center;
-          border-radius: 5px 5px 0 0;
+          border-radius: 8px 8px 0 0;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 24px;
+          font-weight: bold;
         }
         .content {
-          background-color: #f9f9f9;
+          background-color: #ffffff;
           padding: 30px;
-          border-radius: 0 0 5px 5px;
+          border-radius: 0 0 8px 8px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .update-message {
-          background-color: white;
+          background-color: #f9f9f9;
           padding: 20px;
-          border-left: 4px solid #4CAF50;
+          border-right: 4px solid #4CAF50;
           margin: 20px 0;
+          border-radius: 4px;
+          white-space: pre-line;
+          font-size: 16px;
+          line-height: 2;
         }
         .footer {
           text-align: center;
           margin-top: 20px;
           color: #666;
           font-size: 12px;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+        }
+        .info-section {
+          margin: 15px 0;
+          padding: 10px;
+          background-color: #fafafa;
+          border-radius: 4px;
         }
       </style>
     </head>
     <body>
       <div class="header">
-        <h1>${options.companyName || 'Important Update'}</h1>
+        <h1>${options.companyName || 'إشعار مهم'}</h1>
       </div>
       <div class="content">
-        <p>Dear Valued Client,</p>
         <div class="update-message">
           ${message.replace(/\n/g, '<br>')}
         </div>
-        <p>Thank you for your continued partnership.</p>
-        <p>Best regards,<br>${options.senderName || 'The Team'}</p>
-      </div>
-      <div class="footer">
-        <p>This is an automated message. Please do not reply to this email.</p>
-        ${options.companyAddress ? `<p>${options.companyAddress}</p>` : ''}
+        <div class="footer">
+          <p><strong>${options.senderName || 'الفريق'}</strong></p>
+          ${options.companyAddress ? `<p>${options.companyAddress}</p>` : ''}
+          <p style="font-size: 11px; color: #999; margin-top: 15px;">هذه رسالة تلقائية. يرجى عدم الرد على هذا البريد الإلكتروني.</p>
+        </div>
       </div>
     </body>
     </html>

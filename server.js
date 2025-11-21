@@ -20,49 +20,79 @@ app.get('/', (req, res) => {
   });
 });
 
-// API Endpoint: Send email to ONE client
+// API Endpoint: Send email to ONE client (Order Form)
 app.post('/api/send-email', async (req, res) => {
   try {
-    const { 
-      clientEmail, 
-      subject, 
-      message, 
-      companyName, 
-      senderName, 
-      companyAddress 
+    const {
+      clientEmail,
+      name,
+      region,
+      whatsApp,
+      phone,
+      address,
+      productCount,
+      totalPrice,
+      damagedHair,
+      hairLoss,
+      usedProducts,
+      productsWorked,
     } = req.body;
 
-    // Validate required fields
-    if (!clientEmail || !subject || !message) {
+    // ✅ Validation
+    if (!clientEmail) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: clientEmail, subject, and message are required'
+        error: 'clientEmail is required (your receiver email)',
       });
     }
 
-    // Send email
-    await sendUpdateToClient(
-      clientEmail,
-      subject,
-      message,
-      {
-        companyName: companyName || 'Your Company',
-        senderName: senderName || 'The Team',
-        companyAddress: companyAddress || ''
-      }
-    );
+    if (!name || !phone || !whatsApp || !region || !address) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields (name, phone, whatsapp, region, address)',
+      });
+    }
+
+    const subject = `طلب جديد من ${name || 'عميل'}`;
+
+    const message = `
+تم استلام طلب جديد من نموذج الموقع:
+
+البيانات الشخصية:
+- الإسم: ${name}
+- رقم الواتساب: ${whatsApp}
+- رقم الجوال: ${phone}
+- المنطقة: ${region}
+- العنوان: ${address}
+
+بيانات الطلب:
+- عدد القطع: ${productCount || 'غير محدد'}
+- الإجمالي: ${totalPrice || 'غير محدد'} SAR
+
+حالة الشعر:
+- هل الشعر مُقصف؟ ${damagedHair ? 'نعم' : 'لا'}
+- هل يوجد تساقط شعر؟ ${hairLoss ? 'نعم' : 'لا'}
+- هل استعمل منتجات عناية بالشعر من قبل؟ ${usedProducts ? 'نعم' : 'لا'}
+- هل أتت هذه المنتجات بنتيجة؟ ${productsWorked ? 'نعم' : 'لا'}
+    `;
+
+    await sendUpdateToClient(clientEmail, subject, message, {
+      companyName: 'شركة موهرة',
+      senderName: 'نموذج الطلب',
+      companyAddress: 'السعودية',
+    });
 
     res.json({
       success: true,
       message: `Email sent successfully to ${clientEmail}`,
-      recipient: clientEmail
+      recipient: clientEmail,
     });
 
   } catch (error) {
     console.error('Error sending email:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to send email'
+      error: error.message || 'Failed to send email',
     });
   }
 });

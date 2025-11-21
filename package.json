@@ -5,8 +5,6 @@
   "main": "smtp-email-sender.js",
   "scripts": {
     "start": "node server.js",
-    "send-update": "node smtp-email-sender.js",
-    "send-to-client": "node send-to-one-client.js",
     "server": "node server.js",
     "dev": "node server.js"
   },

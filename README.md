@@ -1,144 +1,142 @@
-# SMTP Email Sender for Client Updates
+# SMTP Email API - Order Form Handler
 
-A Node.js application for sending update emails to clients using SMTP.
+A Node.js Express API server for sending order form emails via SMTP. Designed for Arabic content with RTL support.
 
-## What is SMTP?
+## 🚀 Quick Start (Replit)
 
-**SMTP** stands for **Simple Mail Transfer Protocol**. It's the standard protocol used to send emails over the internet.
+1. **Import to Replit:**
+   - Go to https://replit.com
+   - Click "Create Repl"
+   - Click "Import from GitHub"
+   - Enter your repository URL
 
-### In Simple Terms:
-- **SMTP** is like a **postal service** for emails
-- It's the system that **delivers your emails** from your application to your clients' inboxes
-- Just like you need a post office address to send mail, you need an **SMTP server** (like `smtp.gmail.com`) to send emails
-- The SMTP server acts as a **middleman** that takes your email and delivers it to the recipient's email server
+2. **Set Environment Variables:**
+   - Click the "Secrets" tab (lock icon) in Replit
+   - Add these variables:
+     ```
+     SMTP_HOST = smtp.gmail.com
+     SMTP_PORT = 587
+     SMTP_USER = your-email@gmail.com
+     SMTP_PASS = your-gmail-app-password
+     ```
 
-### Why Use SMTP?
-- It's the **standard way** to send emails programmatically (from code)
-- Works with **any email provider** (Gmail, Outlook, Yahoo, custom domains, etc.)
-- Allows you to **automate** sending emails to multiple clients
-- More reliable than using email clients manually
+3. **Run:**
+   - Click the "Run" button
+   - Your API will be live at: `https://your-repl-name.repl.co`
 
-## Installation
+## 📡 API Endpoints
 
-1. Install dependencies:
-```bash
-npm install
+### POST `/api/send-email`
+
+Send order form email to a client.
+
+**Request Body:**
+```json
+{
+  "clientEmail": "recipient@example.com",
+  "name": "أحمد محمد",
+  "region": "الرياض",
+  "whatsApp": "+966501234567",
+  "phone": "+966501234567",
+  "address": "شارع الملك فهد، الرياض",
+  "productCount": "5",
+  "totalPrice": "500",
+  "damagedHair": true,
+  "hairLoss": false,
+  "usedProducts": true,
+  "productsWorked": false
+}
 ```
 
-2. Configure your SMTP settings:
-   - Copy `.env.example` to `.env`
-   - Update the SMTP configuration with your email credentials
+**Required Fields:**
+- `clientEmail` - Recipient email address
+- `name` - Customer name
+- `phone` - Phone number
+- `whatsApp` - WhatsApp number
+- `region` - Region/Area
+- `address` - Full address
 
-## Usage
+**Optional Fields:**
+- `productCount` - Number of products
+- `totalPrice` - Total price
+- `damagedHair` - Boolean
+- `hairLoss` - Boolean
+- `usedProducts` - Boolean
+- `productsWorked` - Boolean
 
-### Basic Usage
-
-```javascript
-const { sendUpdateToClients } = require('./smtp-email-sender');
-
-const clients = ['client1@example.com', 'client2@example.com'];
-const message = 'We have exciting updates to share with you!';
-
-sendUpdateToClients(
-  clients,
-  'Important Update',
-  message,
-  {
-    companyName: 'Your Company',
-    senderName: 'Your Name'
-  }
-);
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Email sent successfully to recipient@example.com",
+  "recipient": "recipient@example.com"
+}
 ```
 
-### Send to Single Client
+### POST `/api/send-emails`
 
-```javascript
-const { sendUpdateToClient } = require('./smtp-email-sender');
+Send email to multiple clients (legacy endpoint).
 
-sendUpdateToClient(
-  'client@example.com',
-  'Update Subject',
-  'Your update message here'
-);
-```
+### GET `/`
 
-## Configuration
+Health check endpoint.
 
-### Where to Get SMTP Settings
-
-Set environment variables in `.env` file or update the `smtpConfig` object in `smtp-email-sender.js`:
-
-- `SMTP_HOST` - Your SMTP server hostname (see provider-specific settings below)
-- `SMTP_PORT` - SMTP port (usually 587 for TLS, 465 for SSL)
-- `SMTP_USER` - Your full email address
-- `SMTP_PASS` - Your email password or app password (see provider-specific instructions)
+## ⚙️ Configuration
 
 ### Gmail Setup
 
-**SMTP Settings:**
-- `SMTP_HOST`: `smtp.gmail.com`
-- `SMTP_PORT`: `587`
-- `SMTP_USER`: Your Gmail address (e.g., `yourname@gmail.com`)
-- `SMTP_PASS`: App Password (NOT your regular password)
+1. Go to https://myaccount.google.com/apppasswords
+2. Enable 2-Step Verification if not already enabled
+3. Generate an App Password for "Mail"
+4. Use the 16-character password in `SMTP_PASS`
 
-**Steps to Get Gmail App Password:**
-1. Go to your Google Account: https://myaccount.google.com/
-2. Click **Security** in the left sidebar
-3. Enable **2-Step Verification** (if not already enabled)
-4. Go to **App passwords**: https://myaccount.google.com/apppasswords
-5. Select **Mail** as the app and **Other** as the device
-6. Enter a name (e.g., "Node.js Email Sender")
-7. Click **Generate**
-8. Copy the 16-character password (use this in `SMTP_PASS`)
+### Environment Variables
 
-### Outlook/Hotmail Setup
+Set these in Replit Secrets or `.env` file:
 
-**SMTP Settings:**
-- `SMTP_HOST`: `smtp-mail.outlook.com` or `smtp.office365.com`
-- `SMTP_PORT`: `587`
-- `SMTP_USER`: Your Outlook email address
-- `SMTP_PASS`: Your Outlook password
+- `SMTP_HOST` - SMTP server (e.g., `smtp.gmail.com`)
+- `SMTP_PORT` - SMTP port (usually `587`)
+- `SMTP_USER` - Your email address
+- `SMTP_PASS` - Your email app password
+- `PORT` - Server port (auto-set by Replit)
 
-**Note:** For Outlook, you may need to enable "Less secure app access" or use an app password if 2FA is enabled.
+## 📧 Email Features
 
-### Yahoo Mail Setup
+- ✅ Arabic text support (RTL)
+- ✅ Professional HTML email template
+- ✅ Plain text fallback
+- ✅ Automatic formatting
+- ✅ Company branding
 
-**SMTP Settings:**
-- `SMTP_HOST`: `smtp.mail.yahoo.com`
-- `SMTP_PORT`: `587` or `465`
-- `SMTP_USER`: Your Yahoo email address
-- `SMTP_PASS`: App Password (required)
+## 🛠️ Local Development
 
-**Steps to Get Yahoo App Password:**
-1. Go to Yahoo Account Security: https://login.yahoo.com/account/security
-2. Enable **Two-step verification**
-3. Generate an **App Password** for "Mail"
-4. Use the generated password in `SMTP_PASS`
+```bash
+# Install dependencies
+npm install
 
-### Custom Email Provider (cPanel, Hosting, etc.)
+# Run server
+npm start
 
-If you have your own domain email (e.g., `yourname@yourdomain.com`):
+# Server runs on http://localhost:3000
+```
 
-1. **Check your hosting provider's documentation** for SMTP settings
-2. **Common settings:**
-   - `SMTP_HOST`: Usually `mail.yourdomain.com` or `smtp.yourdomain.com`
-   - `SMTP_PORT`: `587` (TLS) or `465` (SSL)
-   - `SMTP_USER`: Your full email address
-   - `SMTP_PASS`: Your email account password
+## 📦 Project Structure
 
-3. **Contact your hosting provider** if you're unsure about SMTP settings
+```
+├── server.js              # Express API server
+├── smtp-email-sender.js   # Email sending logic
+├── package.json           # Dependencies
+├── .replit               # Replit configuration
+└── README.md             # This file
+```
 
-### Other Popular Providers
+## 🔒 Security Notes
 
-- **Zoho Mail**: `smtp.zoho.com`, port `587`
-- **SendGrid**: `smtp.sendgrid.net`, port `587`, username: `apikey`, password: your API key
-- **Mailgun**: `smtp.mailgun.org`, port `587`
-- **Amazon SES**: Check AWS SES documentation for your region's SMTP endpoint
+- Never commit `.env` file to Git
+- Use App Passwords, not regular passwords
+- Keep SMTP credentials secure
+- Use environment variables in production
 
-## Features
+## 📝 License
 
-- Send emails to multiple clients at once
-- HTML and plain text email support
-- Professional email templates
-- Error handling
-- SMTP connection verification
+ISC

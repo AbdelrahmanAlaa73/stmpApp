@@ -1,0 +1,16 @@
+language = "nodejs"
+run = "npm start"
+entrypoint = "server.js"
+
+[deploy]
+run = ["sh", "-c", "npm install && npm start"]
+
+[env]
+NODE_ENV = "production"
+
+[languages.javascript]
+pattern = "**/*.js"
+
+[languages.javascript.languageServer]
+start = "typescript-language-server --stdio"
+
